@@ -1,0 +1,42 @@
+# Credentials & Secrets
+.env
+*.json
+*.key
+*.pem
+credentials/
+secrets/
+config/*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv/
+
+# Airflow
+logs/
+airflow.db
+airflow.cfg
+airflow-webserver.pid
+standalone_admin_password.txt
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+*.log
+
+# Data files (if you have any)
+*.csv
+*.parquet
+data/
