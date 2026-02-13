@@ -186,11 +186,15 @@ docker-compose restart airflow-scheduler
 ## Logs
 Execution logs are stored in the `logs/` directory and accessible via the Airflow UI under each DAG run.
 
+## Learning & Inspiration
+
+This project was developed as part of learning from the **DataTalks Data Engineering ZoomCamp**. While the ZoomCamp curriculum uses **Kestra** as the orchestration tool, this implementation was built using **Apache Airflow** as an independent learning exercise to gain deeper expertise with Airflow workflows and task orchestration patterns.
 
 ## Author
 Vishwajeet Bamane
 
 ## References
+- [DataTalksClub Data Engineering ZoomCamp](https://github.com/DataTalksClub/data-engineering-zoomcamp)
 - [Apache Airflow Documentation](https://airflow.apache.org/)
 - [NYC TLC Data](https://github.com/DataTalksClub/nyc-tlc-data)
 - [Google Cloud BigQuery Documentation](https://cloud.google.com/bigquery/docs)
