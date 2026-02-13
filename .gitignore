@@ -40,3 +40,6 @@ Thumbs.db
 *.csv
 *.parquet
 data/
+.env
+logs/
+config/airflow.cfg
