@@ -186,6 +186,35 @@ docker-compose restart airflow-scheduler
 ## Logs
 Execution logs are stored in the `logs/` directory and accessible via the Airflow UI under each DAG run.
 
+## Screenshots
+
+Here are some screenshots showcasing the pipeline in action:
+
+### DAG Main Page
+This is the DAG page in the Airflow UI, showing the deployed pipeline:
+
+![DAG Main Page](docs/dag_main_page.png)
+
+### Trigger UI
+The trigger interface in Airflow, where you can provide parameters like year and month:
+
+![Trigger UI](docs/trigger_ui.png)
+
+### Successful Run with Gantt Chart
+A successful DAG run visualized in the Gantt chart view:
+
+![Successful Run with Gantt](docs/successful_run_with_gantt.png)
+
+### BigQuery - Main Table Preview
+A preview of the data loaded into the main BigQuery table:
+
+![Main Table Preview](docs/main_table_preview.png)
+
+### BigQuery - Main Table Columns
+The schema of the main BigQuery table:
+
+![Main Table Columns](docs/main_table_columns.png)
+
 ## Learning & Inspiration
 
 This project was developed as part of learning from the **DataTalks Data Engineering ZoomCamp**. While the ZoomCamp curriculum uses **Kestra** as the orchestration tool, this implementation was built using **Apache Airflow** as an independent learning exercise to gain deeper expertise with Airflow workflows and task orchestration patterns.
