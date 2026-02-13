@@ -19,8 +19,8 @@ def base_file_path(params):
 with DAG(
     dag_id ='gcp-yellow-taxi-load',
     default_args=default_args,
-    start_date=datetime(2025, 12, 12),
-    schedule=None,
+    start_date=datetime(2018, 12, 12),
+    schedule= "None",
 
     params = {
         "year":Param(
