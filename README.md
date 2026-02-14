@@ -55,7 +55,7 @@ This project implements a scalable data pipeline using Apache Airflow and Docker
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/Vishwajeetbamane/taxi-pipeline.git
 cd gcp-taxi-pipeline
 ```
 
