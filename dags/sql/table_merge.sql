@@ -1,4 +1,4 @@
-MERGE INTO `{{ GCP_PROJECT_ID }}.{{ BQ_DATASET }}.yellow_tripdata` T USING `{{ GCP_PROJECT_ID }}.{{ BQ_DATASET }}.{{ base_file_path(params) }}` S ON T.unique_row_id = S.unique_row_id WHEN NOT MATCHED THEN INSERT (
+MERGE INTO `{{ GCP_PROJECT_ID }}.{{ BQ_DATASET }}.yellow_tripdata` T USING `{{ GCP_PROJECT_ID }}.{{ BQ_DATASET }}.{{ base_file_path(params, data_interval_start) }}` S ON T.unique_row_id = S.unique_row_id WHEN NOT MATCHED THEN INSERT (
   unique_row_id, filename, VendorID, 
   tpep_pickup_datetime, tpep_dropoff_datetime, 
   passenger_count, trip_distance, 

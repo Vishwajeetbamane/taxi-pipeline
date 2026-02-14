@@ -5,36 +5,54 @@ from airflow.providers.google.cloud.transfers.local_to_gcs import LocalFilesyste
 from airflow.providers.google.cloud.operators.gcs import GCSDeleteObjectsOperator
 from airflow.providers.google.cloud.operators.bigquery import BigQueryInsertJobOperator
 from datetime import datetime
+from airflow.exceptions import AirflowException
+import logging
+
 
 default_args = {
     'owner': 'Vishwajeet',
     'retries':'0',
 }
 
-#function to generate base file path, tried using nested macros but rendering doesnt work by law as it renders for the first time only 
-def base_file_path(params):
-    return f"yellow_tripdata_{params['year']}-{params['month']}"
+log = logging.getLogger("airflow.task")
 
+
+from datetime import datetime
+
+def base_file_path(params, data_interval_start):
+    year = int(params.get("year") or data_interval_start.year)
+    month = int(params.get("month") or data_interval_start.month)
+    current_year = datetime.now().year
+
+    if not (2019 <= year <= datetime.now().year):
+        log.error(f"Invalid year detected: {year} > {current_year}")
+        raise AirflowException(
+            f"Invalid year {year}. Cannot be greater than current year {current_year}.")
+
+    if not (1 <= month <= 12):
+        log.error(f"Invalid month detected: {month}")
+        raise AirflowException(
+            f"Invalid year {month}. Month must be between 1 and 12.")
+
+
+    return f"yellow_tripdata_{year}-{month:02d}"
 
 with DAG(
-    dag_id ='gcp-yellow-taxi-load',
+    dag_id ='gcp_taxi_ETL',
     default_args=default_args,
     start_date=datetime(2018, 12, 12),
-    schedule= "None",
+    schedule= "@monthly",
 
     params = {
         "year":Param(
             title= "enter the Year",
-            type = "integer",
-            default = 2019,
-            minimum = 2019
-             
+            type = ["null", "integer"],
+            default = None
         ),
         "month":Param(
             title= "enter the Month",
-            type = "string",
-            enum = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"],
-            default = "01"
+            type = ["null", "integer"],
+            default = None
                         
         )
     },
@@ -51,21 +69,21 @@ with DAG(
     pull_file = BashOperator(
 
         task_id="pull_csv",
-        bash_command="wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/{{ base_file_path(params) }}.csv.gz | gunzip > /tmp/{{ base_file_path(params) }}.csv"        
+        bash_command="wget -qO- https://github.com/DataTalksClub/nyc-tlc-data/releases/download/yellow/{{ base_file_path(params, data_interval_start) }}.csv.gz | gunzip > /tmp/{{ base_file_path(params, data_interval_start) }}.csv"        
         )
 
     delete_if_exists = GCSDeleteObjectsOperator(
         task_id="delete_if_exists",
         bucket_name  = "{{ bucket }}",
-        prefix = "{{ base_file_path(params) }}.csv",
+        prefix = "{{ base_file_path(params, data_interval_start) }}.csv",
         gcp_conn_id = "conn_gcp"
         ) 
     
     upload_to_gcs = LocalFilesystemToGCSOperator(
         task_id="upload_to_gcs",
         gcp_conn_id = "conn_gcp",
-        src = "/tmp/{{ base_file_path(params) }}.csv",
-        dst = "{{ base_file_path(params) }}.csv",
+        src = "/tmp/{{ base_file_path(params, data_interval_start) }}.csv",
+        dst = "{{ base_file_path(params, data_interval_start) }}.csv",
         bucket= "{{ bucket }}"
         )
     
@@ -126,7 +144,7 @@ with DAG(
     cleanUp_tmp = BashOperator(
 
         task_id="cleanUp_tmp",
-        bash_command="rm -f /tmp/{{ base_file_path(params) }}.csv"
+        bash_command="rm -f /tmp/{{ base_file_path(params, data_interval_start) }}.csv"
         )
     
 

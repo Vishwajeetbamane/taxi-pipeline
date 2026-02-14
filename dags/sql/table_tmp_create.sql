@@ -1,5 +1,5 @@
 CREATE 
-OR REPLACE TABLE `{{ BQ_DATASET }}.{{ base_file_path(params) }}` AS 
+OR REPLACE TABLE `{{ BQ_DATASET }}.{{ base_file_path(params, data_interval_start) }}` AS 
 SELECT 
   MD5(
     CONCAT(
@@ -25,7 +25,7 @@ SELECT
       )
     )
   ) AS unique_row_id, 
-  "{{ base_file_path(params) }}" AS filename, 
+  "{{ base_file_path(params, data_interval_start) }}" AS filename, 
   * 
 FROM 
-  `{{ BQ_DATASET }}.{{ base_file_path(params) }}_ext`;
+  `{{ BQ_DATASET }}.{{ base_file_path(params, data_interval_start) }}_ext`;

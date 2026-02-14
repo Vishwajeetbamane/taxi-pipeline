@@ -1,5 +1,5 @@
 CREATE 
-OR REPLACE EXTERNAL TABLE `{{ BQ_DATASET }}.{{ base_file_path(params) }}_ext` (
+OR REPLACE EXTERNAL TABLE `{{ BQ_DATASET }}.{{ base_file_path(params, data_interval_start) }}_ext` (
   VendorID STRING OPTIONS (
     description = 'A code indicating the LPEP provider that provided the record. 1= Creative Mobile Technologies, LLC; 2= VeriFone Inc.'
   ), 
@@ -55,6 +55,6 @@ OR REPLACE EXTERNAL TABLE `{{ BQ_DATASET }}.{{ base_file_path(params) }}_ext` (
     description = 'Congestion surcharge applied to trips in congested zones'
   )
 ) OPTIONS (
-  format = 'CSV', uris = [ 'gs://{{ bucket }}/{{ base_file_path(params) }}.csv' ], 
+  format = 'CSV', uris = [ 'gs://{{ bucket }}/{{ base_file_path(params, data_interval_start) }}.csv' ], 
   skip_leading_rows = 1, ignore_unknown_values = TRUE
 );

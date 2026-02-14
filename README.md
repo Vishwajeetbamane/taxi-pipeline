@@ -214,6 +214,33 @@ A preview of the data loaded into the main BigQuery table:
 The schema of the main BigQuery table:
 
 ![Main Table Columns](docs/main_table_columns.png)
+  - Confirm that the data is correctly loaded into BigQuery by querying the relevant tables.
+
+## Backfilling Data Using Airflow UI
+
+The `gcp_yellow_taxi_load.py` DAG supports backfilling for a range of dates directly through the Airflow Trigger DAG UI. This allows you to process historical data without manually triggering the DAG for each interval.
+
+### Steps to Backfill Using the Airflow UI
+
+1. **Navigate to the DAG**:
+   - Open the Airflow UI and locate the `gcp-yellow-taxi-load` DAG.
+
+2. **Open the Trigger DAG Modal**:
+   - Click on the "Trigger DAG" button for the `gcp-yellow-taxi-load` DAG.
+
+3. **Specify the Date Range**:
+   - In the "Trigger DAG" modal, locate the backfill section.
+   - Provide/select the `from` and `to` dates to define the range of dates you want to process.
+
+4. **Trigger the DAG**:
+   - Click the "Trigger" button to start the backfill process. Airflow will automatically execute the DAG for each interval within the specified range.
+
+5. **Monitor Execution**:
+   - Check the task logs in the Airflow UI to ensure successful execution of each run.
+
+6. **Verify Results**:
+   - Confirm that the data for all specified intervals has been successfully loaded into BigQuery by querying the relevant tables.
+
 
 ## Learning & Inspiration
 
