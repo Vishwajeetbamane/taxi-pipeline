@@ -42,6 +42,7 @@ with DAG(
     default_args=default_args,
     start_date=datetime(2018, 12, 12),
     schedule= "@monthly",
+    max_active_runs = 2
 
     params = {
         "year":Param(
